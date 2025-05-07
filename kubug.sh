@@ -41,7 +41,7 @@ else
 fi
 
 echo "Using PID: \$PID"
-sudo nsenter -t \$PID -n ${CMD}
+sudo stdbuf -oL -eL nsenter -t \$PID -n ${CMD}
 EOF
 }
 
