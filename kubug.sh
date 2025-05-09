@@ -32,11 +32,11 @@ set -e
 
 if command -v crictl &> /dev/null; then
     echo "command: crictl"
-    CONTAINER_ID=\$(sudo crictl ps | grep ${POD_NAME} | awk '{print \$1}')
+    CONTAINER_ID=\$(sudo crictl ps | grep ${POD_NAME} | awk 'NR==1 {print \$1}')
     PID=\$(sudo crictl inspect --output go-template --template '{{.info.pid}}' \$CONTAINER_ID)
 else
     echo "command: ctr"
-    CONTAINER_ID=\$(sudo ctr --namespace k8s.io containers list | grep ${POD_NAME} | awk '{print \$1}')
+    CONTAINER_ID=\$(sudo ctr --namespace k8s.io containers list | grep ${POD_NAME} | awk 'NR==1 {print \$1}')
     PID=\$(sudo ctr --namespace k8s.io task ps \$CONTAINER_ID | awk 'NR==2 {print \$1}')
 fi
 
